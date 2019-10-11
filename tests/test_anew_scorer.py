@@ -54,20 +54,24 @@ class TestAnewScorer(unittest.TestCase):
                 self.test_word, 'all', 'Dominance Mean'))
 
     def test_score_words(self):
-        self.assertDictEqual(
+        self.assertScoreAlmostEqual(
             self.test_text_one_scores,
             self.scorer.vad_score_words(self.test_text_one))
-        self.assertEqual(
+        self.assertScoreAlmostEqual(
             self.test_text_two_scores,
             self.scorer.vad_score_words(self.test_text_two))
 
     def test_score_words_zero_missind_words(self):
-        self.assertEqual(
-            self.test_text_one_scores_zero_missing,
-            self.scorer.vad_score_words(self.test_text_one, True))
-        self.assertEqual(
-            self.test_text_two_scores,
-            self.scorer.vad_score_words(self.test_text_two, True))
+        self.assertScoreAlmostEqual(
+                self.test_text_one_scores_zero_missing,
+                self.scorer.vad_score_words(self.test_text_one, True))
+        self.assertScoreAlmostEqual(
+                self.test_text_two_scores,
+                self.scorer.vad_score_words(self.test_text_two, True))
+
+    def assertScoreAlmostEqual(self, s1, s2):
+        for k in s1:
+            self.assertAlmostEqual(s1[k], s2[k])
 
 
 if __name__ == '__main__':
