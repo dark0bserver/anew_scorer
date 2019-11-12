@@ -32,16 +32,18 @@ class AnewScorer:
             labels=['all', 'female', 'male']):
         self.score_ref = dict()
         self.labels = labels
-        self.vocabulary = set()
+        self.vocabulary = dict()
 
         for label in self.labels:
+            self.vocabulary[label] = set()
+
             with open(f'{score_path}{label}.csv', 'r') as score_file:
                 self.score_ref[label] = dict()
                 reader = csv.DictReader(score_file)
                 for row in reader:
                     scores = dict()
                     word = row.pop('Description')
-                    self.vocabulary.add(word)
+                    self.vocabulary[label].add(word)
                     scores['Word Frequency'] = row.pop('Word Frequency')
                     for k in row:
                         scores[k] = float(row[k])
@@ -69,7 +71,7 @@ class AnewScorer:
             for axis in ['Valence Mean', 'Arousal Mean', 'Dominance Mean']:
                 total = 0
                 for word in words:
-                    if word in self.vocabulary:
+                    if word in self.vocabulary[label]:
                         total += self.__get_word_score__(word, label, axis)
                         num_words += 1
                     elif zero_missing_words:
