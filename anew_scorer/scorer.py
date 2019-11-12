@@ -60,7 +60,6 @@ class AnewScorer:
         """
         # TODO extend this, it only returns mean values at the moment
         results = dict()
-        num_words = 0
 
         for label in self.labels:
             results[label] = dict()
@@ -70,6 +69,7 @@ class AnewScorer:
             # Dominance Mean,Dominance SD
             for axis in ['Valence Mean', 'Arousal Mean', 'Dominance Mean']:
                 total = 0
+                num_words = 0
                 for word in words:
                     if word in self.vocabulary[label]:
                         total += self.__get_word_score__(word, label, axis)
